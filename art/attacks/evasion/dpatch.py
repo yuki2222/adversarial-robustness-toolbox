@@ -101,7 +101,7 @@ class DPatch(EvasionAttack):
         x: np.ndarray,
         y: Optional[np.ndarray] = None,
         target_label: Optional[Union[int, List[int], np.ndarray]] = None,
-        iter_check = 1000,
+        iter_check = None,
         **kwargs
     ) -> np.ndarray:
         """
@@ -205,8 +205,10 @@ class DPatch(EvasionAttack):
                 patch_target.append(target_dict)
 
         for i_step in trange(self.max_iter, desc="DPatch iteration", disable=not self.verbose):
-            if (i_step+1)%iter_check == 0:
-                print(f'Iteration: {i_step+1}')
+            
+            if iter_check is not None and isinstance(iter_check, int):
+                if (i_step+1)%iter_check == 0:
+                    print(f'Iteration: {i_step+1}')
             
             if i_step == 0 or (i_step + 1) % 100 == 0:
                 logger.info("Training Step: %i", i_step + 1)
